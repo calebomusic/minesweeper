@@ -53,9 +53,10 @@ class Tile
        "#{@bomb_count}"
      end
 
+   elsif flagged
+     "F"
    else
      "*"
-
    end
   end
 
