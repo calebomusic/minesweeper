@@ -22,11 +22,11 @@ class Tile
 
     (row-1..row+1).to_a.each do |r|
       (col-1..col+1).to_a.each do |c|
-        neighbors << @board[r][c] if @board[r] || @board[r][c]
+        neighbors << @board[r][c] if @board[r]
       end
     end
 
-    neighbors
+    neighbors.compact
   end
 
   # def explore_neighbors

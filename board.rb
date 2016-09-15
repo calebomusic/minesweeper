@@ -40,8 +40,8 @@ class Board
     bomb_count = 0
 
     until bomb_count == 10
-      row = rand(10)
-      col = rand(10)
+      row = rand(9)
+      col = rand(9)
 
       unless @grid[row][col].bomb
         @grid[row][col].bomb = true
@@ -51,11 +51,16 @@ class Board
   end
 
   def place_tiles
-    @grid.map.with_index do |row, i|
+    @grid = @grid.map.with_index do |row, i|
       row.map.with_index do |col, j|
         col = Tile.new([i,j])
       end
     end
   end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+  board = Board.new
+  board.render
 end
