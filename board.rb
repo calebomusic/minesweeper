@@ -12,6 +12,15 @@ class Board
   def configure_grid
     place_tiles
     place_bombs
+    count_bombs
+  end
+
+  def count_bombs
+    @grid.each do |row|
+      row.each do |col|
+        col.neighbor_bomb_count
+      end
+    end
   end
 
   def render
@@ -43,7 +52,7 @@ class Board
 
   def []=(pos, value)
     row, col = pos
-    grid[row][co] = value
+    grid[row][col] = value
   end
 
   def place_bombs
@@ -70,9 +79,4 @@ class Board
     end
   end
 
-end
-
-if __FILE__ == $PROGRAM_NAME
-  board = Board.new
-  board.render
 end

@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Tile
   attr_accessor :revealed, :flagged, :board, :bomb
 
@@ -5,6 +7,7 @@ class Tile
     @revealed = false
     @flagged = false
     @pos = pos
+    @bomb = false
   end
 
   def reveal
@@ -25,7 +28,8 @@ class Tile
 
     (row-1..row+1).to_a.each do |r|
       (col-1..col+1).to_a.each do |c|
-        neighbors << @board[r][c] if !@pos = [r, c] && @board[r]
+        next if r < 0 || c < 0
+        neighbors << @board[[r,c]] if @pos != [r, c] && r.between?(0,8) && @board[[r,c]] && @board[[r,c]].hidden?
       end
     end
 
@@ -36,7 +40,7 @@ class Tile
     return if neighbors.any? { |neighbor| neighbor.bomb }
 
     neighbors.map { |neighbor| neighbor.revealed = true }
-    neighbors.explore_neighbors
+    neighbors.each { |neighbor| neighbor.explore_neighbors }
   end
 
   def neighbor_bomb_count

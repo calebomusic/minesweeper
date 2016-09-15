@@ -1,4 +1,5 @@
 require_relative 'board'
+require 'byebug'
 
 class Minesweeper
   attr_accessor :board
@@ -37,7 +38,7 @@ class Minesweeper
 
   def parse_move(move)
     move = move.scan(/[a-z0-9]/)
-    [move[0].downcase + parse_pos(move.drop(1))]
+    [move[0].downcase] << parse_pos(move.drop(1))
   end
 
   def parse_pos(pos)
@@ -49,15 +50,21 @@ class Minesweeper
     puts ">"
   end
 
-  def play_turn
-  end
-
   def run
   end
 
   def over?
+    @board.won?
   end
 
   def render
+    @board.render
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  game = Minesweeper.new
+  game.render
+  game.commence_proceedings
+  game.render
 end
