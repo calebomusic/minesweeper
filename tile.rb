@@ -1,9 +1,8 @@
 
 class Tile
-  attr_accessor :revealed, :flagged, :board
+  attr_accessor :revealed, :flagged, :board, :bomb
 
-  def initialize(bomb = false, pos)
-    @bomb = bomb
+  def initialize(pos)
     @revealed = false
     @flagged = false
     @pos = pos
