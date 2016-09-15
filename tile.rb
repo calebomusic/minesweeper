@@ -44,4 +44,24 @@ class Tile
 
      @bomb_count
   end
+
+  def to_s
+   if revealed
+
+     if @bomb_count == 0
+       "_"
+     else
+       "#{@bomb_count}"
+     end
+
+   else
+     "*"
+
+   end
+  end
+
+  def inspect
+    "position = #{@pos} bomb_count = #{@bomb_count} flagged = #{@flagged} revealed = #{@revealed} bomb = #{@bomb}"
+  end
+
 end
