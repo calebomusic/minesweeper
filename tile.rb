@@ -12,6 +12,10 @@ class Tile
     revealed = true
   end
 
+  def hidden?
+    !@revealed
+  end
+
   def flag
     flagged ? flagged = false : flagged = true
   end

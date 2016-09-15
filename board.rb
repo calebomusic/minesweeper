@@ -27,6 +27,15 @@ class Board
     puts result
   end
 
+  def won?
+    @grid.each do |row|
+      row.each do |col|
+        return false if col.hidden? && !col.bomb
+      end
+    end
+    true
+  end
+
   def [](pos)
     row, col = pos
     grid[row][col]
