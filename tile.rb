@@ -50,11 +50,11 @@ class Tile
      if @bomb_count == 0
        "_"
      else
-       "#{@bomb_count}"
+       "#{@bomb_count}".green
      end
 
    elsif flagged
-     "F"
+     "F".red
    else
      "*"
    end

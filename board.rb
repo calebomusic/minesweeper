@@ -1,4 +1,5 @@
 require_relative 'tile'
+require 'colorize'
 
 class Board
   attr_accessor :grid
@@ -14,9 +15,9 @@ class Board
   end
 
   def render
-    result = ""
-    @grid.each do |row|
-      temp_row = ""
+    result = "    " + (0..8).to_a.join("    ").blue
+    @grid.each_with_index do |row, i|
+      temp_row = "#{i} ".blue
       row.each do |col|
         temp_row << "| #{col.to_s} |"
       end
