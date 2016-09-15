@@ -1,4 +1,3 @@
-
 class Tile
   attr_accessor :revealed, :flagged, :board, :bomb
 
@@ -26,17 +25,19 @@ class Tile
 
     (row-1..row+1).to_a.each do |r|
       (col-1..col+1).to_a.each do |c|
-        neighbors << @board[r][c] if @board[r]
+        neighbors << @board[r][c] if !@pos = [r, c] && @board[r]
       end
     end
 
     neighbors.compact
   end
 
-  # def explore_neighbors
-  #   return false if neighbors.any? { |neighbor| neighbor.bomb }
-  #   neighbors
-  # end
+  def explore_neighbors
+    return if neighbors.any? { |neighbor| neighbor.bomb }
+
+    neighbors.map { |neighbor| neighbor.revealed = true }
+    neighbors.explore_neighbors
+  end
 
   def neighbor_bomb_count
     @bomb_count = 0
@@ -67,5 +68,4 @@ class Tile
   def inspect
     "position = #{@pos} bomb_count = #{@bomb_count} flagged = #{@flagged} revealed = #{@revealed} bomb = #{@bomb}"
   end
-
 end

@@ -64,6 +64,8 @@ class Board
     @grid = @grid.map.with_index do |row, i|
       row.map.with_index do |col, j|
         col = Tile.new([i,j])
+        col.board = self
+        col
       end
     end
   end
