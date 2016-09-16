@@ -42,7 +42,16 @@ class Board
         return false if col.hidden? && !col.bomb
       end
     end
-    true
+    "won"
+  end
+
+  def lose?
+    @grid.each do |row|
+      row.each do |col|
+        return "lost" if col.revealed && col.bomb
+      end
+    end
+    false
   end
 
   def [](pos)

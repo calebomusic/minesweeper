@@ -51,10 +51,15 @@ class Minesweeper
   end
 
   def run
+    until over?
+      
+    end
+
+    puts "You #{over?}!"
   end
 
   def over?
-    @board.won?
+    @board.won? || @board.lost?
   end
 
   def render
