@@ -9,11 +9,10 @@ class Minesweeper
     @board = board
   end
 
-  def commence_proceedings
-    prompt
-    move, pos = get_move
+  def commence_proceedings(move)
+    move_type, pos = parse_move(move)
 
-    if move == 'f'
+    if move_type == 'f'
       place_flag(pos)
     else
       reveal_tile(pos)
@@ -33,8 +32,12 @@ class Minesweeper
     @board[pos].revealed = true
   end
 
-  def get_move
-    parse_move(gets.chomp)
+  def save?(move)
+    if move.split(' ').downcase == 'save'
+      true
+    else
+      false
+    end
   end
 
   def parse_move(move)
@@ -46,7 +49,7 @@ class Minesweeper
     pos.map(&:to_i)
   end
 
-  def prompt
+  def prompt_move
     puts "Make your move (ex: f 0,0 or r 2,3)"
     puts ">"
   end
@@ -119,7 +122,13 @@ class Minesweeper
     @board.render
 
     until over?
-      commence_proceedings
+      move = gets.chomp
+      if save?(move)
+        filename = move
+        save(filename)
+      else
+        commence_proceedings(move)
+      end
       @board.render
     end
 
