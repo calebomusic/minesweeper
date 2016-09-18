@@ -20,6 +20,11 @@ class Board
     grid[0][0].cursor = true
   end
 
+  def remove_cursor
+    prc = Proc.new { |tile| tile.cursor = false }
+    each_tile(&prc)
+  end
+  
   def each_tile(&prc)
     each_row do |row|
       row.each do |tile|
