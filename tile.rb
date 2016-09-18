@@ -8,6 +8,7 @@ class Tile
     @flagged = false
     @pos = pos
     @bomb = false
+    @cursor = false
   end
 
   def reveal
@@ -61,17 +62,21 @@ class Tile
   def to_s
    if revealed
      if @bomb
-       "!".red
+       cursor_color("!".red)
      elsif @bomb_count == 0
-       "_"
+       cursor_color("_")
      else
-       colorize(@bomb_count)
+       cursor_color(colorize(@bomb_count))
      end
    elsif flagged
-     "F".red
+     cursor_color("F".red)
    else
-     "*".yellow
+     cursor_color("*".yellow)
    end
+  end
+
+  def cursor_color(str)
+    @cursor ? str.green : str
   end
 
   def colorize(bomb_count)

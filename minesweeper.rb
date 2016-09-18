@@ -4,6 +4,7 @@ require 'yaml'
 require 'remedy'
 
 class Minesweeper
+  include Remedy
   attr_accessor :board
 
   def initialize(board = Board.new)
@@ -46,7 +47,7 @@ class Minesweeper
       false
     end
   end
-  
+
   def save_game(filename)
     File.write(filename, YAML::dump(self))
   end

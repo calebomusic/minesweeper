@@ -13,6 +13,11 @@ class Board
     place_tiles
     place_bombs
     count_bombs
+    start_cursor
+  end
+
+  def place_cursor
+    grid[row][col].cursor = true
   end
 
   def count_bombs
