@@ -66,8 +66,16 @@ class Minesweeper
   end
 
   def run
+    # INCLUDE below when finished testing
     beginning_announcement
-    choice = parse_game_choice(gets.chomp)
+
+    begin
+      choice = parse_game_choice(gets.chomp)
+    rescue
+      puts "enter either 'new' or 'load {filename}''"
+      retry
+    end
+
     if choice == 'new'
       play_game
     else
@@ -77,8 +85,17 @@ class Minesweeper
     end
   end
 
+  def parse_game_choice(choice)
+    game_type = choice.split(' ')[0].downcase
+    if game_type == 'new' || game_type == 'load'
+      choice
+    else
+      raise
+    end
+  end
+
   def save_game
-    
+
   end
 
   def load_game(filename)
@@ -87,7 +104,18 @@ class Minesweeper
     YAML.load_file(filename)
   end
 
+  def begin_game_announcement
+    puts "New game time"
+    puts
+    puts "Enter 'save {filename}' to save your game"
+    puts
+    puts "Let's play!"
+    puts
+    sleep(3)
+  end
+
   def play_game
+    begin_game_announcement
     @board.render
 
     until over?
@@ -110,16 +138,4 @@ end
 if __FILE__ == $PROGRAM_NAME
   game = Minesweeper.new
   game.run
-end
-
-if 1 > 2
-  # class Cat
-  #   attr :name, :spots
-  #   def initialize(name)
-  #     @name = name
-  #     @spots = [[0], [1]]
-  #   end
-  # end
-  #
-  # c = Cat.new('charles')
 end
