@@ -1,3 +1,5 @@
+# Version without cursor input implemented
+
 require_relative 'board'
 require 'byebug'
 require 'yaml'
@@ -41,7 +43,7 @@ class Minesweeper
   end
 
   def save?(move)
-    if move.split(' ')[0].downcase == 'save'
+    if move.glyph == :s
       true
     else
       false
@@ -52,10 +54,15 @@ class Minesweeper
     File.write(filename, YAML::dump(self))
   end
 
-  def parse_filename(filename)
-    filename = filename.split(' ')[1..-1][0]
-    filename.gsub(/ /, '_')
+  def get_filename
+    prompt_filename
+    filename = gets.chomp
   end
+
+  # def parse_filename(filename)
+  #   filename = filename.split(' ')[1..-1][0]
+  #   filename.gsub(/ /, '_')
+  # end
 
   def load_game(filename)
     puts "Loading game: #{filename}"
@@ -69,12 +76,12 @@ class Minesweeper
 
     until over?
       prompt_move
-      move = gets.chomp
+      move = Keyboard.get
       if save?(move)
-        debugger
-        filename = parse_filename(move)
+        filename = get_filename
         save_game(filename)
       else
+        # determine_move(move)
         place_move(move)
       end
       @board.render
@@ -140,7 +147,7 @@ class Minesweeper
   def begin_game_announcement
     puts "New game time"
     puts
-    puts "Enter 'save {filename}' to save your game"
+    puts "Enter 's' to save your game"
     puts
     puts "Let's play!"
     puts
@@ -149,6 +156,12 @@ class Minesweeper
 
   def prompt_move
     puts "Make your move (ex: f 0,0 or r 2,3)"
+    puts ">"
+  end
+
+  def prompt_filename
+    puts "Save game? Ok."
+    puts "Enter filename to save to"
     puts ">"
   end
 end
