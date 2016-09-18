@@ -69,7 +69,10 @@ class Minesweeper
     beginning_announcement
     choice = parse_game_choice(gets.chomp)
     if choice == 'new'
+      play_game
     else
+      game = load_game
+      play_loaded_game(game)
     end
   end
   def play_game
