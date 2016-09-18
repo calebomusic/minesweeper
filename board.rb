@@ -20,6 +20,20 @@ class Board
     grid[0][0].cursor = true
   end
 
+  def each_tile(&prc)
+    each_row do |row|
+      row.each do |tile|
+        prc.call(tile)
+      end
+    end
+  end
+
+  def each_row(&prc)
+    @grid.each do |row|
+      prc.call(row)
+    end
+  end
+
   def count_bombs
     @grid.each do |row|
       row.each do |col|
