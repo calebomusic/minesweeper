@@ -35,10 +35,8 @@ class Board
   end
 
   def count_bombs
-    @grid.each do |row|
-      row.each do |col|
-        col.neighbor_bomb_count
-      end
+    each_tile do |tile|
+      tile.neighbor_bomb_count
     end
   end
 
@@ -46,8 +44,8 @@ class Board
     result = "    " + (0..8).to_a.join("    ")
     @grid.each_with_index do |row, i|
       temp_row = "#{i} "
-      row.each do |col|
-        temp_row << "| #{col.to_s} |"
+      row.each do |tile|
+        temp_row << "| #{tile.to_s} |"
       end
       result << "\n" << temp_row << "\n"
     end
@@ -56,10 +54,8 @@ class Board
   end
 
   def won_by_reveal?
-    @grid.each do |row|
-      row.each do |col|
-        return false if col.hidden? && !col.bomb
-      end
+    each_tile do |tile|
+      return false if tile.hidden? && !tile.bomb
     end
     "won"
   end
@@ -87,20 +83,17 @@ class Board
   def count_tiles(&prc)
     prc ||= Proc.new { |a| true }
     count = 0
-    @grid.each do |row|
-      row.each do |tile|
-        count += 1 if prc.call(tile)
-      end
+
+    each_tile do |tile|
+      count += 1 if prc.call(tile)
     end
 
     count
   end
 
   def lost?
-    @grid.each do |row|
-      row.each do |col|
-        return "lost" if col.revealed && col.bomb
-      end
+    each_tile do |tile|
+      return "lost" if tile.revealed && tile.bomb
     end
     false
   end
@@ -130,11 +123,11 @@ class Board
   end
 
   def place_tiles
-    @grid = @grid.map.with_index do |row, i|
-      row.map.with_index do |col, j|
-        col = Tile.new([i,j])
-        col.board = self
-        col
+    @grid = grid.map.with_index do |row, i|
+      row.map.with_index do |tile, j|
+        tile = Tile.new([i,j])
+        tile.board = self
+        tile
       end
     end
   end
