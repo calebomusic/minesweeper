@@ -61,7 +61,7 @@ class Minesweeper
     puts
     sleep(2)
     puts
-    puts "Enter 'new' for a new game or 'load {game_name}' to load a game"
+    puts "Enter 'new' for a new game or 'load {filename}' to load a game"
     puts ">"
   end
 
@@ -71,10 +71,22 @@ class Minesweeper
     if choice == 'new'
       play_game
     else
-      game = load_game
-      play_loaded_game(game)
+      filename = choice.split('')[1]
+      game = load_game(filename)
+      game.play_game
     end
   end
+
+  def save_game
+    
+  end
+
+  def load_game(filename)
+    puts "Loading game: #{filename}"
+    sleep(1)
+    YAML.load_file(filename)
+  end
+
   def play_game
     @board.render
 
@@ -98,4 +110,16 @@ end
 if __FILE__ == $PROGRAM_NAME
   game = Minesweeper.new
   game.run
+end
+
+if 1 > 2
+  # class Cat
+  #   attr :name, :spots
+  #   def initialize(name)
+  #     @name = name
+  #     @spots = [[0], [1]]
+  #   end
+  # end
+  #
+  # c = Cat.new('charles')
 end
