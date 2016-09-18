@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    remedy (0.0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  remedy
+
+BUNDLED WITH
+   1.13.0
