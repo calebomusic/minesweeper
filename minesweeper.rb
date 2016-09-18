@@ -98,7 +98,13 @@ class Minesweeper
   end
 
   def save_game(filename)
+
     File.write(filename, YAML::dump(self))
+  end
+
+  def parse_filename(filename)
+    filename = filename.split(' ')[1..-1]
+    filename.gsub(/ /, '_')
   end
 
   def load_game(filename)
@@ -125,7 +131,7 @@ class Minesweeper
       prompt_move
       move = gets.chomp
       if save?(move)
-        filename = move
+        filename = parse_filename(move)
         save_game(filename)
       else
         commence_proceedings(move)
