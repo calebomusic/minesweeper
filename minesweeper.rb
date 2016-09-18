@@ -82,7 +82,8 @@ class Minesweeper
     if choice == 'new'
       play_game
     else
-      filename = choice.split('')[1]
+      debugger
+      filename = choice.split(' ')[1]
       game = load_game(filename)
       game.play_game
     end
@@ -98,7 +99,6 @@ class Minesweeper
   end
 
   def save_game(filename)
-
     File.write(filename, YAML::dump(self))
   end
 
