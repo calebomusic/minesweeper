@@ -70,7 +70,7 @@ class Minesweeper
 
   def run
     # INCLUDE below when finished testing
-    # beginning_announcement
+    beginning_announcement
 
     begin
       choice = parse_game_choice(gets.chomp)
@@ -82,7 +82,6 @@ class Minesweeper
     if choice == 'new'
       play_game
     else
-      debugger
       filename = choice.split(' ')[1]
       game = load_game(filename)
       game.play_game
@@ -103,7 +102,7 @@ class Minesweeper
   end
 
   def parse_filename(filename)
-    filename = filename.split(' ')[1..-1]
+    filename = filename.split(' ')[1..-1][0]
     filename.gsub(/ /, '_')
   end
 
@@ -131,6 +130,7 @@ class Minesweeper
       prompt_move
       move = gets.chomp
       if save?(move)
+        debugger
         filename = parse_filename(move)
         save_game(filename)
       else
