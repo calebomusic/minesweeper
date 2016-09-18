@@ -24,9 +24,9 @@ class Board
   end
 
   def render
-    result = "    " + (0..8).to_a.join("    ").blue
+    result = "    " + (0..8).to_a.join("    ")
     @grid.each_with_index do |row, i|
-      temp_row = "#{i} ".blue
+      temp_row = "#{i} "
       row.each do |col|
         temp_row << "| #{col.to_s} |"
       end
@@ -36,7 +36,7 @@ class Board
     puts result
   end
 
-  def won?
+  def won_by_reveal?
     @grid.each do |row|
       row.each do |col|
         return false if col.hidden? && !col.bomb
@@ -45,7 +45,39 @@ class Board
     "won"
   end
 
-  def lose?
+  def won_by_flag?
+    flagged_tiles_count = flagged_bombs_count
+    flagged_tiles_count == bomb_count ? "won" : false
+  end
+
+  def flag_count
+    prc = Proc.new { |t| t.flagged }
+    count_tiles(&prc)
+  end
+
+  def flagged_bombs_count
+    prc = Proc.new { |t| t.flagged && t.bomb }
+    count_tiles(&prc)
+  end
+
+  def bomb_count
+    prc = Proc.new { |t| t.bomb }
+    count_tiles(&prc)
+  end
+
+  def count_tiles(&prc)
+    prc ||= Proc.new { |a| true }
+    count = 0
+    @grid.each do |row|
+      row.each do |tile|
+        count += 1 if prc.call(tile)
+      end
+    end
+
+    count
+  end
+
+  def lost?
     @grid.each do |row|
       row.each do |col|
         return "lost" if col.revealed && col.bomb
@@ -67,7 +99,7 @@ class Board
   def place_bombs
     bomb_count = 0
 
-    until bomb_count == 5
+    until bomb_count == 10
       row = rand(9)
       col = rand(9)
 

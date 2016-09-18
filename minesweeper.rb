@@ -1,11 +1,12 @@
 require_relative 'board'
 require 'byebug'
+require 'yaml'
 
 class Minesweeper
   attr_accessor :board
 
-  def initialize
-    @board = Board.new
+  def initialize(board = Board.new)
+    @board = board
   end
 
   def commence_proceedings
@@ -50,16 +51,40 @@ class Minesweeper
     puts ">"
   end
 
-  def run
-    until over?
+  def beginning_announcement
+    puts (("      " * 3) + "WELCOME").blue
+    sleep(1)
+    puts (("      " * 3) + "  TO  ").blue
+    sleep(1)
+    puts
+    puts (("    " * 4) + "MINESWEEPER").red
+    puts
+    sleep(2)
+    puts
+    puts "Enter 'new' for a new game or 'load {game_name}' to load a game"
+    puts ">"
+  end
 
+  def run
+    beginning_announcement
+    choice = parse_game_choice(gets.chomp)
+    if choice == 'new'
+    else
+    end
+  end
+  def play_game
+    @board.render
+
+    until over?
+      commence_proceedings
+      @board.render
     end
 
     puts "You #{over?}!"
   end
 
   def over?
-    @board.won? || @board.lost?
+    @board.won_by_reveal? || @board.won_by_flag? || @board.lost?
   end
 
   def render
@@ -69,7 +94,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   game = Minesweeper.new
-  game.render
-  game.commence_proceedings
-  game.render
+  game.run
 end

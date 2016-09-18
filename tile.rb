@@ -37,7 +37,7 @@ class Tile
   end
 
   def explore_neighbors
-    return self if @flagged 
+    return self if @flagged
 
     @revealed = true
 
@@ -60,21 +60,34 @@ class Tile
 
   def to_s
    if revealed
-
-     if @bomb_count == 0
+     if @bomb
+       "!".red
+     elsif @bomb_count == 0
        "_"
      else
-       "#{@bomb_count}".green
+       colorize(@bomb_count)
      end
-
    elsif flagged
      "F".red
    else
-     "*"
+     "*".yellow
    end
   end
 
+  def colorize(bomb_count)
+    str = "#{@bomb_count}"
+    case @bomb_count
+      when 1
+        str.green
+      when 2
+        str.blue
+      when 3
+        str.red
+    end
+  end
+
+
   def inspect
-    "position = #{@pos} bomb_count = #{@bomb_count} flagged = #{@flagged} revealed = #{@revealed} bomb = #{@bomb}"
+    ":position = #{@pos} bomb_count = #{@bomb_count} flagged = #{@flagged} revealed = #{@revealed} bomb = #{@bomb}:"
   end
 end
