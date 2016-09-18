@@ -67,7 +67,7 @@ class Board
   def place_bombs
     bomb_count = 0
 
-    until bomb_count == 10
+    until bomb_count == 5
       row = rand(9)
       col = rand(9)
 

@@ -37,10 +37,15 @@ class Tile
   end
 
   def explore_neighbors
-    return if neighbors.any? { |neighbor| neighbor.bomb }
+    return self if @flagged 
 
-    neighbors.map { |neighbor| neighbor.revealed = true }
-    neighbors.each { |neighbor| neighbor.explore_neighbors }
+    @revealed = true
+
+    if !@bomb && neighbor_bomb_count == 0
+      neighbors.each { |tile| tile.explore_neighbors }
+    end
+
+    self
   end
 
   def neighbor_bomb_count
@@ -50,7 +55,7 @@ class Tile
       @bomb_count += 1 if neighbor.bomb
     end
 
-     @bomb_count
+    @bomb_count
   end
 
   def to_s

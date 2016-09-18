@@ -52,7 +52,7 @@ class Minesweeper
 
   def run
     until over?
-      
+
     end
 
     puts "You #{over?}!"
