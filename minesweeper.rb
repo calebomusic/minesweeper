@@ -1,71 +1,13 @@
 require_relative 'board'
 require 'byebug'
 require 'yaml'
+require 'remedy'
 
 class Minesweeper
   attr_accessor :board
 
   def initialize(board = Board.new)
     @board = board
-  end
-
-  def commence_proceedings(move)
-    move_type, pos = parse_move(move)
-
-    if move_type == 'f'
-      place_flag(pos)
-    else
-      reveal_tile(pos)
-      reveal_neighbors(@board[pos])
-    end
-  end
-
-  def reveal_neighbors(tile)
-    tile.explore_neighbors
-  end
-
-  def place_flag(pos)
-    @board[pos].flagged = true
-  end
-
-  def reveal_tile(pos)
-    @board[pos].revealed = true
-  end
-
-  def save?(move)
-    if move.split(' ')[0].downcase == 'save'
-      true
-    else
-      false
-    end
-  end
-
-  def parse_move(move)
-    move = move.scan(/[a-z0-9]/)
-    [move[0].downcase] << parse_pos(move.drop(1))
-  end
-
-  def parse_pos(pos)
-    pos.map(&:to_i)
-  end
-
-  def prompt_move
-    puts "Make your move (ex: f 0,0 or r 2,3)"
-    puts ">"
-  end
-
-  def beginning_announcement
-    puts (("      " * 3) + "WELCOME").blue
-    sleep(1)
-    puts (("      " * 3) + "  TO  ").blue
-    sleep(1)
-    puts
-    puts (("    " * 4) + "MINESWEEPER").red
-    puts
-    sleep(2)
-    puts
-    puts "Enter 'new' for a new game or 'load {filename}' to load a game"
-    puts ">"
   end
 
   def run
@@ -97,6 +39,14 @@ class Minesweeper
     end
   end
 
+  def save?(move)
+    if move.split(' ')[0].downcase == 'save'
+      true
+    else
+      false
+    end
+  end
+  
   def save_game(filename)
     File.write(filename, YAML::dump(self))
   end
@@ -112,16 +62,6 @@ class Minesweeper
     YAML.load_file(filename)
   end
 
-  def begin_game_announcement
-    puts "New game time"
-    puts
-    puts "Enter 'save {filename}' to save your game"
-    puts
-    puts "Let's play!"
-    puts
-    sleep(3)
-  end
-
   def play_game
     begin_game_announcement
     @board.render
@@ -134,7 +74,7 @@ class Minesweeper
         filename = parse_filename(move)
         save_game(filename)
       else
-        commence_proceedings(move)
+        place_move(move)
       end
       @board.render
     end
@@ -146,8 +86,69 @@ class Minesweeper
     @board.won_by_reveal? || @board.won_by_flag? || @board.lost?
   end
 
+  def place_move(move)
+    move_type, pos = parse_move(move)
+
+    if move_type == 'f'
+      place_flag(pos)
+    else
+      reveal_tile(pos)
+      reveal_neighbors(@board[pos])
+    end
+  end
+
+  def reveal_neighbors(tile)
+    tile.explore_neighbors
+  end
+
+  def place_flag(pos)
+    @board[pos].flagged = true
+  end
+
+  def reveal_tile(pos)
+    @board[pos].revealed = true
+  end
+
+  def parse_move(move)
+    move = move.scan(/[a-z0-9]/)
+    [move[0].downcase] << parse_pos(move.drop(1))
+  end
+
+  def parse_pos(pos)
+    pos.map(&:to_i)
+  end
+
   def render
     @board.render
+  end
+
+  def beginning_announcement
+    puts (("      " * 3) + "WELCOME").blue
+    sleep(1)
+    puts (("      " * 3) + "  TO  ").blue
+    sleep(1)
+    puts
+    puts (("    " * 4) + "MINESWEEPER").red
+    puts
+    sleep(2)
+    puts
+    puts "Enter 'new' for a new game or 'load {filename}' to load a game"
+    puts ">"
+  end
+
+  def begin_game_announcement
+    puts "New game time"
+    puts
+    puts "Enter 'save {filename}' to save your game"
+    puts
+    puts "Let's play!"
+    puts
+    sleep(3)
+  end
+
+  def prompt_move
+    puts "Make your move (ex: f 0,0 or r 2,3)"
+    puts ">"
   end
 end
 
