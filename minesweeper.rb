@@ -33,7 +33,7 @@ class Minesweeper
   end
 
   def save?(move)
-    if move.split(' ').downcase == 'save'
+    if move.split(' ')[0].downcase == 'save'
       true
     else
       false
@@ -70,7 +70,7 @@ class Minesweeper
 
   def run
     # INCLUDE below when finished testing
-    beginning_announcement
+    # beginning_announcement
 
     begin
       choice = parse_game_choice(gets.chomp)
@@ -97,8 +97,8 @@ class Minesweeper
     end
   end
 
-  def save_game
-
+  def save_game(filename)
+    File.write(filename, YAML::dump(self))
   end
 
   def load_game(filename)
@@ -122,10 +122,11 @@ class Minesweeper
     @board.render
 
     until over?
+      prompt_move
       move = gets.chomp
       if save?(move)
         filename = move
-        save(filename)
+        save_game(filename)
       else
         commence_proceedings(move)
       end
