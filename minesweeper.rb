@@ -13,7 +13,7 @@ class Minesweeper
 
   def run
     # INCLUDE below when finished testing
-    beginning_announcement
+    # beginning_announcement
 
     begin
       choice = parse_game_choice(gets.chomp)
@@ -59,7 +59,7 @@ class Minesweeper
 
   def load_game(filename)
     puts "Loading game: #{filename}"
-    sleep(1)
+    # sleep(1)
     YAML.load_file(filename)
   end
 
@@ -144,7 +144,7 @@ class Minesweeper
     puts
     puts "Let's play!"
     puts
-    sleep(3)
+    # sleep(3)
   end
 
   def prompt_move

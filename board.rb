@@ -16,8 +16,8 @@ class Board
     start_cursor
   end
 
-  def place_cursor
-    grid[row][col].cursor = true
+  def start_cursor
+    grid[0][0].cursor = true
   end
 
   def count_bombs

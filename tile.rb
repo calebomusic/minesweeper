@@ -1,7 +1,7 @@
 require 'byebug'
 
 class Tile
-  attr_accessor :revealed, :flagged, :board, :bomb
+  attr_accessor :revealed, :flagged, :board, :bomb, :cursor
 
   def initialize(pos)
     @revealed = false
@@ -71,12 +71,20 @@ class Tile
    elsif flagged
      cursor_color("F".red)
    else
-     cursor_color("*".yellow)
+     cursor_color("*".light_black)
    end
   end
 
   def cursor_color(str)
-    @cursor ? str.green : str
+    if @cursor
+      if @revealed
+        str.green
+      else
+        "?".green
+      end
+    else
+      str
+    end
   end
 
   def colorize(bomb_count)
