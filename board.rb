@@ -59,6 +59,9 @@ class Board
   end
 
   def render
+    system('clear')
+    puts (("    " * 4) + "MINESWEEPER").red
+    puts
     result = "    " + (0..8).to_a.join("    ")
     @grid.each_with_index do |row, i|
       temp_row = "#{i} "

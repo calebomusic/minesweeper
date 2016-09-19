@@ -78,9 +78,9 @@ class Tile
   def cursor_color(str)
     if @cursor
       if @revealed
-        str.green
+        str.light_cyan
       else
-        "?".green
+        "?".cyan
       end
     else
       str

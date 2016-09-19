@@ -20,8 +20,7 @@ class Minesweeper
   end
 
   def run
-    # INCLUDE below when finished testing
-    # beginning_announcement
+    beginning_announcement
 
     begin
       choice = parse_game_choice(gets.chomp)
@@ -67,7 +66,7 @@ class Minesweeper
 
   def load_game(filename)
     puts "Loading game: #{filename}"
-    # sleep(1)
+    sleep(1)
     YAML.load_file(filename)
   end
 
@@ -84,7 +83,6 @@ class Minesweeper
       else
         determine_move(move)
       end
-      # system('clear')
       render
     end
 
@@ -99,8 +97,7 @@ class Minesweeper
     elsif move == :f
       place_flag(cursor_pos)
     elsif move == :q
-      puts "You quit."
-      exit
+      quitting_announcement
     end
   end
 
@@ -148,7 +145,6 @@ class Minesweeper
   end
 
   def reveal_tile(pos)
-    # debugger
     tile = @board[pos]
     tile.revealed = true
     reveal_neighbors(tile)
@@ -168,6 +164,7 @@ class Minesweeper
   end
 
   def beginning_announcement
+    system('clear')
     puts (("      " * 3) + "WELCOME").blue
     sleep(1)
     puts (("      " * 3) + "  TO  ").blue
@@ -182,18 +179,23 @@ class Minesweeper
   end
 
   def begin_game_announcement
-    puts "New game time"
+    sleep(1)
+    system('clear')
+    sleep(1)
     puts
-    puts "Enter 's' to save your game"
+    puts
+    puts "New game time"
     puts
     puts "Let's play!"
     puts
-    # sleep(3)
+    sleep(3)
   end
 
   def prompt_move
-    puts "Make your move (ex: f 0,0 or r 2,3)"
-    puts ">"
+    puts
+    puts "Move with the arrow keys"
+    puts
+    puts "reveal: 'r',flag: 'f', save: 's', quit: 'q'"
   end
 
   def prompt_filename
@@ -215,6 +217,15 @@ class Minesweeper
     sleep(4)
     puts
     puts "Great!".white
+  end
+
+  def quitting_announcement
+    sleep(1)
+    puts
+    puts "You quit."
+    sleep(1)
+    puts "Great!".white
+    exit
   end
 end
 
