@@ -77,7 +77,7 @@ class Minesweeper
 
     until over?
       prompt_move
-      move = Keyboard.get.glyph
+      move = Keyboard.get.to_s.to_sym
       if save?(move)
         filename = get_filename
         save_game(filename)
@@ -99,25 +99,24 @@ class Minesweeper
     elsif move == :f
       place_flag(cursor_pos)
     elsif move == :q
-      puts "You quit"
+      puts "You quit."
       exit
     end
   end
 
   def move_cursor(pos)
-    debugger
     new_pos = new_cursor_pos(pos)
     clear_cursor
     place_cursor(new_pos)
   end
 
-  def place_cursor(new_move)
+  def place_cursor(new_pos)
     @board.place_cursor(new_pos)
   end
 
   def new_cursor_pos(pos)
-    row, col = pos
-    move_row, move_col = MOVES[move]
+    row, col = cursor_pos
+    move_row, move_col = MOVES[pos]
 
     [ row + move_row, col + move_col ]
   end
@@ -134,19 +133,7 @@ class Minesweeper
     @board.won_by_reveal? || @board.won_by_flag? || @board.lost?
   end
 
-  def place_move(move)
-    move_type, pos = parse_move(move)
-
-    if move_type == 'f'
-      place_flag(pos)
-    else
-      reveal_tile(pos)
-      reveal_neighbors(@board[pos])
-    end
-  end
-
-  def reveal_neighbors(pos)
-    tile = @board[pos]
+  def reveal_neighbors(tile)
     tile.explore_neighbors
   end
 
@@ -155,8 +142,10 @@ class Minesweeper
   end
 
   def reveal_tile(pos)
-    @board[pos].revealed = true
-    reveal_neighbors(@board[pos])
+    debugger
+    tile = @board[pos]
+    tile.revealed = true
+    reveal_neighbors(pos)
   end
 
   def parse_move(move)

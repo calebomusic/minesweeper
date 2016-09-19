@@ -22,7 +22,7 @@ class Board
 
   def place_cursor(pos)
     row, col = pos
-    grid[row][col].cursor = tile
+    grid[row][col].cursor = true
   end
 
   def clear_cursor
@@ -40,7 +40,7 @@ class Board
 
   def cursor_pos
     grid.each_with_index do |row, i|
-      row.each do |tile, j|
+      row.each_with_index do |tile, j|
         return [i, j] if tile.cursor
       end
     end
