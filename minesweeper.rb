@@ -73,7 +73,7 @@ class Minesweeper
 
   def play_game
     begin_game_announcement
-    @board.render
+    render
 
     until over?
       prompt_move
@@ -85,10 +85,10 @@ class Minesweeper
         determine_move(move)
       end
       # system('clear')
-      @board.render
+      render
     end
 
-    puts "You #{over?}!"
+    end_game_announcement
   end
 
   def determine_move(move)
@@ -118,7 +118,13 @@ class Minesweeper
     row, col = cursor_pos
     move_row, move_col = MOVES[pos]
 
-    [ row + move_row, col + move_col ]
+    new_row = (row + move_row) % board_length
+    new_col = (col + move_col) % board_length
+    [ new_row, new_col ]
+  end
+
+  def board_length
+    @board.length
   end
 
   def cursor_pos
@@ -194,6 +200,21 @@ class Minesweeper
     puts "Save game? Ok."
     puts "Enter filename to save to"
     puts ">"
+  end
+
+  def end_game_announcement
+    sleep(3)
+    puts
+    clear_cursor
+    puts "Oh...".red
+    sleep(2)
+    render
+    sleep(1)
+    puts
+    puts "You #{over?}!"
+    sleep(4)
+    puts
+    puts "Great!".white
   end
 end
 

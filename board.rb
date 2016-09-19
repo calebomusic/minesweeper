@@ -75,7 +75,7 @@ class Board
     each_tile do |tile|
       return false if tile.hidden? && !tile.bomb
     end
-    "won"
+    "won".blue
   end
 
   def won_by_flag?
@@ -111,7 +111,7 @@ class Board
 
   def lost?
     each_tile do |tile|
-      return "lost" if tile.revealed && tile.bomb
+      return "lost".red if tile.revealed && tile.bomb
     end
     false
   end
@@ -126,6 +126,9 @@ class Board
     grid[row][col] = value
   end
 
+  def length
+    @grid.length
+  end
   def place_bombs
     bomb_count = 0
 
