@@ -26,8 +26,11 @@ class Board
   end
 
   def clear_cursor
-    prc = Proc.new { |tile| tile.cursor = false }
-    each_tile(&prc)
+    each_tile { |tile| tile.cursor = false }
+  end
+
+  def reveal_all
+    each_tile { |tile| tile.revealed = true }
   end
 
   def each_tile(&prc)
@@ -87,18 +90,15 @@ class Board
   end
 
   def flag_count
-    prc = Proc.new { |t| t.flagged }
-    count_tiles(&prc)
+    count_tiles { |t| t.flagged }
   end
 
   def flagged_bombs_count
-    prc = Proc.new { |t| t.flagged && t.bomb }
-    count_tiles(&prc)
+    count_tiles { |t| t.flagged && t.bomb }
   end
 
   def bomb_count
-    prc = Proc.new { |t| t.bomb }
-    count_tiles(&prc)
+    count_tiles { |t| t.bomb }
   end
 
   def count_tiles(&prc)
@@ -135,7 +135,7 @@ class Board
   def place_bombs
     bomb_count = 0
 
-    until bomb_count == 10
+    until bomb_count == 9
       row = rand(9)
       col = rand(9)
 

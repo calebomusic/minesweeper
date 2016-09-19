@@ -85,7 +85,6 @@ class Minesweeper
       end
       render
     end
-
     end_game_announcement
   end
 
@@ -163,6 +162,11 @@ class Minesweeper
     @board.render
   end
 
+  def final_render
+    # THERES A BUG HERE SOMEWHERE
+    @board.reveal_all
+    render
+  end
   def beginning_announcement
     system('clear')
     puts (("      " * 3) + "WELCOME").blue
@@ -208,10 +212,11 @@ class Minesweeper
     clear_cursor
     puts "Oh...".red
     sleep(2)
-    render
+    puts "You #{over?}!"
+    sleep(1)
+    final_render
     sleep(1)
     puts
-    puts "You #{over?}!"
     sleep(4)
     puts
     puts "Great!".white
