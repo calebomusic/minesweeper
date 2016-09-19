@@ -184,8 +184,6 @@ class Minesweeper
     sleep(1)
     puts
     puts
-    puts "New game time"
-    puts
     puts "Let's play!"
     puts
     sleep(3)
