@@ -20,15 +20,28 @@ class Board
     grid[0][0].cursor = true
   end
 
-  def remove_cursor
+  def place_cursor(pos)
+    row, col = pos
+    grid[row][col].cursor = tile
+  end
+
+  def clear_cursor
     prc = Proc.new { |tile| tile.cursor = false }
     each_tile(&prc)
   end
-  
+
   def each_tile(&prc)
     each_row do |row|
       row.each do |tile|
         prc.call(tile)
+      end
+    end
+  end
+
+  def cursor_pos
+    grid.each_with_index do |row, i|
+      row.each do |tile, j|
+        return [i, j] if tile.cursor
       end
     end
   end

@@ -7,6 +7,12 @@ require 'remedy'
 
 class Minesweeper
   include Remedy
+
+  MOVES = { :right => [0, 1],
+            :left => [0, -1],
+            :up => [-1, 0],
+            :down => [1, 0] }
+
   attr_accessor :board
 
   def initialize(board = Board.new)
@@ -43,7 +49,7 @@ class Minesweeper
   end
 
   def save?(move)
-    if move.glyph == :s
+    if move == :s
       true
     else
       false
@@ -59,11 +65,6 @@ class Minesweeper
     filename = gets.chomp
   end
 
-  # def parse_filename(filename)
-  #   filename = filename.split(' ')[1..-1][0]
-  #   filename.gsub(/ /, '_')
-  # end
-
   def load_game(filename)
     puts "Loading game: #{filename}"
     # sleep(1)
@@ -76,18 +77,57 @@ class Minesweeper
 
     until over?
       prompt_move
-      move = Keyboard.get
+      move = Keyboard.get.glyph
       if save?(move)
         filename = get_filename
         save_game(filename)
       else
-        # determine_move(move)
-        place_move(move)
+        determine_move(move)
       end
+      # system('clear')
       @board.render
     end
 
     puts "You #{over?}!"
+  end
+
+  def determine_move(move)
+    if [:left, :right, :up, :down].include?(move)
+      move_cursor(move)
+    elsif move == :r
+      reveal_tile(cursor_pos)
+    elsif move == :f
+      place_flag(cursor_pos)
+    elsif move == :q
+      puts "You quit"
+      exit
+    end
+  end
+
+  def move_cursor(pos)
+    debugger
+    new_pos = new_cursor_pos(pos)
+    clear_cursor
+    place_cursor(new_pos)
+  end
+
+  def place_cursor(new_move)
+    @board.place_cursor(new_pos)
+  end
+
+  def new_cursor_pos(pos)
+    row, col = pos
+    move_row, move_col = MOVES[move]
+
+    [ row + move_row, col + move_col ]
+  end
+
+  def cursor_pos
+    @board.cursor_pos
+  end
+
+  def clear_cursor
+    @board.clear_cursor
   end
 
   def over?
@@ -105,7 +145,8 @@ class Minesweeper
     end
   end
 
-  def reveal_neighbors(tile)
+  def reveal_neighbors(pos)
+    tile = @board[pos]
     tile.explore_neighbors
   end
 
@@ -115,6 +156,7 @@ class Minesweeper
 
   def reveal_tile(pos)
     @board[pos].revealed = true
+    reveal_neighbors(@board[pos])
   end
 
   def parse_move(move)
