@@ -142,10 +142,10 @@ class Minesweeper
   end
 
   def reveal_tile(pos)
-    debugger
+    # debugger
     tile = @board[pos]
     tile.revealed = true
-    reveal_neighbors(pos)
+    reveal_neighbors(tile)
   end
 
   def parse_move(move)
